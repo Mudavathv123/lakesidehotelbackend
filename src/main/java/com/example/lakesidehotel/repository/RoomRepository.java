@@ -9,9 +9,12 @@ import org.springframework.stereotype.Repository;
 import com.example.lakesidehotel.model.Room;
 
 @Repository
-public interface RoomRepository extends JpaRepository<Room, Long>{
+public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("SELECT DISTINCT r.roomType from Room r")
     List<String> findDistinctRoomType();
+
+    @Query("SELECT r.imagePublicId FROM Room r WHERE r.id = ?1")
+    String findImagePublicId(Long roomId);
 
 }
