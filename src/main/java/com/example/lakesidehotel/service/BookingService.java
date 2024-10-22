@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -54,11 +55,11 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public String saveBooking(Long roomId, BookedRoom bookingRequest) {
+    public ResponseEntity<?> saveBooking(Long roomId, BookedRoom bookingRequest) {
         try {
 
             if (bookingRequest.getCheckOutDate().isBefore(bookingRequest.getCheckInDate()))
-                throw new InvalidBookingRequestException("Check-in date must come before check-out date");
+                return ResponseEntity.badRequest().body("Check-in date must come before check-out date");
 
             Room room = roomRepository.findById(roomId).get();
             List<BookedRoom> existingBookings = room.getBookings();
@@ -67,13 +68,14 @@ public class BookingService implements IBookingService {
                 room.addBooking(bookingRequest);
                 bookingRepository.save(bookingRequest);
             } else {
-                throw new InvalidBookingRequestException("Sorry, This is not avialbale for the selected dates");
+                return ResponseEntity.badRequest().body("Sorry, This is not avialbale for the selected dates");
             }
 
-            return bookingRequest.getBookingConfirmationCode();
+            return ResponseEntity.ok(
+                    "Room booked successfully, Your booking code is : " + bookingRequest.getBookingConfirmationCode());
 
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (InvalidBookingRequestException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
