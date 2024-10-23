@@ -21,11 +21,6 @@ const BookingForm = () => {
         numOfChildrens: ""
     });
 
-    const [roomInfo, setRoomInfo] = useState({
-        roomType: "",
-        roomPrice: "",
-        imageUrl: ""
-    });
 
     const { roomid } = useParams();
     const roomId = roomid
@@ -49,11 +44,11 @@ const BookingForm = () => {
         getRoomPriceById(roomId);
     }, [roomId])
 
+
     const calculatePayment = () => {
         const checkInDate = moment(booking.checkInDate);
         const checkOutDate = moment(booking.checkOutDate);
         const diffIndays = checkOutDate.diff(checkInDate, "days");
-        console.log("diffInDays", diffIndays)
         const price = roomPrice ? roomPrice : 0;
         return diffIndays * price;
     }
@@ -68,20 +63,18 @@ const BookingForm = () => {
     const isCheckOutDateValid = () => {
         if (!moment(booking.checkOutDate).isSameOrAfter(booking.checkInDate)) {
             setErrorMessage("Check-out date must be come after check-in date");
-            return true;
+            return false;
         } else {
             setErrorMessage("");
-            return false;
+            return true;
         }
     }
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
         const form = evt.currentTarget;
-        console.log("guest valid", isGuestValid())
-        console.log("check out date valid", isCheckOutDateValid())
         console.log(form.checkValidity())
-        if (form.checkValidity() === false || isGuestValid() || isCheckOutDateValid())
+        if (form.checkValidity() === false || !isGuestValid() || !isCheckOutDateValid())
             evt.stopPropagation();
         else
             setIsSubmited(true)
@@ -230,6 +223,12 @@ const BookingForm = () => {
                             />
                         )
                     }
+                    {
+                        errorMessage && (
+                            <p className="text-danger text-center">{errorMessage}</p>
+                        )
+                    }
+
                 </div>
             </div>
         </>
