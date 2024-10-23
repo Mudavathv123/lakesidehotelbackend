@@ -1,6 +1,6 @@
 
-export const baseUrl = "http://localhost:9192/rooms"
-export const baseUrlForBookings = "http://localhost:9192/bookings"
+export const baseUrl = "https://lakesidehotelbackend.onrender.com/rooms"
+export const baseUrlForBookings = "https://lakesidehotelbackend.onrender.com/bookings"
 
 /* this function for add new room in the database */
 
