@@ -106,40 +106,12 @@ export async function bookRoom(roomId, booking) {
     }
 }
 
-// export async function bookRoom(roomId, booking) {
-//     console.log(booking)
-//     try {
-//         const response = await fetch(`${baseUrlForBookings}/room/${roomId}/booking`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify(booking), 
-//         });
-
-//         console.log(response);
-
-//         if (!response.ok) {
-//             const errorMessage = await response.text();
-//             throw new Error(`Error booking room: ${errorMessage}`);
-//         }
-
-
-//         const result = await response.text();
-//         console.log(result)
-//         return result; 
-
-//     } catch (error) {
-//         console.error("Error booking room:", error);
-//         throw new Error(`Error booking room: ${error.message}`);
-//     }
-// }
 
 /* the function get the all booking from database  */
 export async function getAllBookings() {
 
     try {
-        const response = await fetch(`/bookings/all-bookings`);
+        const response = await fetch(`${baseUrlForBookings}/all-bookings`);
         return response.json();
     } catch (error) {
         throw new Error(`Error fetching booking ${error.message}`)

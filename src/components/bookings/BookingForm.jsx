@@ -18,7 +18,7 @@ const BookingForm = () => {
         checkInDate: "",
         checkOutDate: "",
         numOfAdults: "",
-        numOfChildrens: "0"
+        numOfChildrens: ""
     });
 
     const [roomInfo, setRoomInfo] = useState({
@@ -81,7 +81,7 @@ const BookingForm = () => {
         console.log("guest valid", isGuestValid())
         console.log("check out date valid", isCheckOutDateValid())
         console.log(form.checkValidity())
-        if (form.checkValidity() === false || !isGuestValid() || isCheckOutDateValid())
+        if (form.checkValidity() === false || isGuestValid() || isCheckOutDateValid())
             evt.stopPropagation();
         else
             setIsSubmited(true)
